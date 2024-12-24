@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 
 const ViewSpots: React.FC = () => {
   const [spots, setSpots] = useState<any[]>([]);
+  const [showSuccessModal, setShowSuccessModal] = useState(false); // State to show success modal
+  const [modalMessage, setModalMessage] = useState(''); // Modal message
 
   useEffect(() => {
     // Fetch parking spots from the backend
@@ -23,10 +25,18 @@ const ViewSpots: React.FC = () => {
     });
 
     if (response.ok) {
-      alert('Parking spot updated successfully!');
+      setModalMessage('Parking spot updated successfully!');
+      setShowSuccessModal(true); // Show success modal
+      setTimeout(() => {
+        setShowSuccessModal(false); // Hide the modal after 3 seconds
+      }, 3000);
       setSpots(spots.map(spot => spot._id === id ? { ...spot, is_available: !isAvailable } : spot));
     } else {
-      alert('Error updating parking spot');
+      setModalMessage('Error updating parking spot');
+      setShowSuccessModal(true); // Show error modal
+      setTimeout(() => {
+        setShowSuccessModal(false); // Hide the modal after 3 seconds
+      }, 3000);
     }
   };
 
@@ -40,15 +50,22 @@ const ViewSpots: React.FC = () => {
             <div className="text-sm text-gray-600">{`Lat: ${spot.latitude}, Long: ${spot.longitude}`}</div>
             <button
               onClick={() => handleUpdateAvailability(spot._id, spot.is_available)}
-              className={`px-4 py-2 rounded-lg ${
-                spot.is_available ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
-              }`}
+              className={`px-4 py-2 rounded-lg ${spot.is_available ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}
             >
               {spot.is_available ? 'Mark as Not Available' : 'Mark as Available'}
             </button>
           </div>
         ))}
       </div>
+
+      {/* Success/Failure Modal */}
+      {showSuccessModal && (
+        <div className="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded-md shadow-lg">
+            <p className="text-lg font-semibold">{modalMessage}</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
