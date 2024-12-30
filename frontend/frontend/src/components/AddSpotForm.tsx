@@ -29,7 +29,7 @@ const AddSpotForm: React.FC = () => {
     const newSpot = { name, latitude, longitude, is_available: isAvailable };
 
     // Send POST request to the backend
-    const response = await fetch('http://localhost:5000/api/spots', {
+    const response = await fetch('https://parking-jade.vercel.app/api/spots', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newSpot),

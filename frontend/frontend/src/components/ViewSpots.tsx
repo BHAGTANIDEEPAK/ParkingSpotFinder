@@ -8,7 +8,7 @@ const ViewSpots: React.FC = () => {
   useEffect(() => {
     // Fetch parking spots from the backend
     const fetchSpots = async () => {
-      const response = await fetch('http://localhost:5000/api/spots');
+      const response = await fetch('https://parking-jade.vercel.app/api/spots');
       const data = await response.json();
       setSpots(data);
     };
@@ -18,7 +18,7 @@ const ViewSpots: React.FC = () => {
 
   const handleUpdateAvailability = async (id: string, isAvailable: boolean) => {
     const updatedSpot = { is_available: !isAvailable };
-    const response = await fetch(`http://localhost:5000/api/spots/${id}`, {
+    const response = await fetch(`https://parking-jade.vercel.app/api/spots/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(updatedSpot),
